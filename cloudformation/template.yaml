@@ -311,6 +311,12 @@ Resources:
       Port: 80
       VpcId: !Ref myVPC
 
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/sample-website-log-group
+      RetentionInDays: 1
+
   EcsTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -332,7 +338,9 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: /ecs/fargate-task-definition
+              awslogs-region: us-east-1
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-stream-prefix: sample-website-log-stream
 
   EcsService:
     Type: AWS::ECS::Service
